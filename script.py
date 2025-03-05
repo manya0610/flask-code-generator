@@ -3,7 +3,7 @@ import inspect
 
 from sqlalchemy import Column, Table
 
-from code_generator import CodeGenerator
+from src.code_generator.code_generator import CodeGenerator
 
 
 # Function to get model attributes and types
@@ -33,7 +33,7 @@ def load_models(module_name):
     for name, obj in inspect.getmembers(module, inspect.isclass):
         # Check if the class is a subclass of db.Model
         if hasattr(obj, "__bases__") and any(
-            base.__name__ == "Model" for base in obj.__bases__
+            base.__name__ == "Base" for base in obj.__bases__
         ):
             models[name] = obj
 
@@ -43,7 +43,7 @@ def load_models(module_name):
 # Example usage
 if __name__ == "__main__":
     # Adjust the module name according to your file structure
-    module_name = "models"
+    module_name = "src.database.models"
     models = load_models(module_name)
     print(models)
     for model_name, model_class in models.items():
@@ -52,7 +52,8 @@ if __name__ == "__main__":
             if isinstance(val, Table):
                 print(key, val, "\n")
                 table: Table = val
-                print(table.columns)
-                # code_generator = CodeGenerator(model_name, table.columns, module_name)
-                # print(code_generator.model_attributes[0])
+                print("columns", table.columns)
+                code_generator = CodeGenerator(model_name, table.columns, module_name)
+                print(code_generator.model_attributes[0])
                 # code_generator.service_file_generator()
+                code_generator.repo_file_generator()
