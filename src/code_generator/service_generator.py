@@ -1,15 +1,14 @@
-from src.code_generator.database_model import DataBaseModel
-
+from typing import Any
 
 from sqlalchemy import Column
 
-
-from typing import Any
+from src.code_generator.database_model import DataBaseModel
 
 
 class ServiceGenerator(DataBaseModel):
-
-    def __init__(self, model_name:str, model_attributes:list[Column[Any]], models_file:str) -> None:
+    def __init__(
+        self, model_name: str, model_attributes: list[Column[Any]], models_file: str
+    ) -> None:
         super().__init__(model_name, model_attributes, models_file)
 
     def get_imports(self) -> str:

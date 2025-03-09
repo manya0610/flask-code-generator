@@ -1,3 +1,3 @@
 format:
-	isort --profile=black ./src
-	black ./src
+	ruff check --select I --fix src/
+	ruff format src/

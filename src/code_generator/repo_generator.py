@@ -2,13 +2,13 @@ from typing import Any
 
 from sqlalchemy import Column
 
-
 from src.code_generator.database_model import DataBaseModel
 
 
 class RepoGenerator(DataBaseModel):
-
-    def __init__(self, model_name:str, model_attributes:list[Column[Any]], models_file:str) -> None:
+    def __init__(
+        self, model_name: str, model_attributes: list[Column[Any]], models_file: str
+    ) -> None:
         super().__init__(model_name, model_attributes, models_file)
 
     def get_imports(self) -> str:
@@ -77,7 +77,7 @@ def create_{self.model_name_snake_case}({", ".join(attributes)}):
         return f"""
 def update_{self.model_name_snake_case}({self.model_primary_keys[0][0]}, {"=None, ".join(attributes[1:])}=None):
     try:
-        values = {{ {", ".join([ '"' + attribute + '"' + " : " + attribute for attribute in attributes[1:]])} }}
+        values = {{ {", ".join(['"' + attribute + '"' + " : " + attribute for attribute in attributes[1:]])} }}
         values = {{ key: value for key, value in values.items() if value is not None }}
 
         if not values:

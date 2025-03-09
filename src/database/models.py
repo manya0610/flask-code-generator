@@ -1,5 +1,5 @@
-from typing import Any
 import uuid
+from typing import Any
 
 from sqlalchemy import UUID, Column, Integer, String
 
@@ -17,7 +17,7 @@ class User(Base):
         self.email = email
 
     def __repr__(self) -> str:
-        return f"<User {self.name!r}>"
+        return f"<User {self.name}>"
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -31,6 +31,7 @@ class Org(Base):
     """
     dasda
     """
+
     __tablename__ = "org"
     id: int = Column(Integer(), primary_key=True, unique=True, autoincrement=True)
     name: str = Column(String(50), nullable=False)

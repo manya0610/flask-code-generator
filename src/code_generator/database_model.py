@@ -1,7 +1,6 @@
-import re
 from typing import Any, Tuple
 
-from sqlalchemy import Column, Table
+from sqlalchemy import Column
 
 from src.code_generator.helper import convert_to_snake_case_name
 
@@ -13,7 +12,9 @@ class DataBaseModel:
     model_name_snake_case: str
     models_file: str
 
-    def __init__(self, model_name:str, model_attributes:list[Column[Any]], models_file:str) -> None:
+    def __init__(
+        self, model_name: str, model_attributes: list[Column[Any]], models_file: str
+    ) -> None:
         self.model_name = model_name
         self.model_attributes = model_attributes
 
@@ -23,7 +24,5 @@ class DataBaseModel:
                     (str(model_attribute).split(".")[-1], model_attribute.type)
                 )
 
-        self.model_name_snake_case = convert_to_snake_case_name(
-            model_name
-        )
+        self.model_name_snake_case = convert_to_snake_case_name(model_name)
         self.models_file = models_file
