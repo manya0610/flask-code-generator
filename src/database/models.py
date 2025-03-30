@@ -27,16 +27,16 @@ class User(Base):
         }
 
 
-class Org(Base):
-    """
-    dasda
-    """
+# class Org(Base):
+#     """
+#     dasda
+#     """
 
-    __tablename__ = "org"
-    id: int = Column(Integer(), primary_key=True, unique=True, autoincrement=True)
-    name: str = Column(String(50), nullable=False)
-    public_id: uuid.UUID = Column(UUID, nullable=False, unique=True)
+#     __tablename__ = "org"
+#     id: int = Column(Integer(), primary_key=True, unique=True, autoincrement=True)
+#     name: str = Column(String(50), nullable=False)
+#     public_id: uuid.UUID = Column(UUID, nullable=False, unique=True)
 
-    def __init__(self, name, public_id):
-        self.name = name
-        self.public_id = public_id
+#     def __init__(self, name, public_id):
+#         self.name = name
+#         self.public_id = public_id

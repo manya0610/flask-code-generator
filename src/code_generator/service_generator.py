@@ -10,22 +10,23 @@ class ServiceGenerator(DataBaseModel):
         self, model_name: str, model_attributes: list[Column[Any]], models_file: str
     ) -> None:
         super().__init__(model_name, model_attributes, models_file)
+        self.repo_file = self.model_name_snake_case + "_" + "repo"
 
     def get_imports(self) -> str:
         return f"""
-from {self.models_file} import {self.model_name}, db\n"""
+import {self.repo_file}\n"""
 
-    def get_all_query_generator(self) -> str:
+    def list_query_generator(self) -> str:
         return f"""
-def get_all_{self.model_name_snake_case}():
-    return {self.model_name}.query.all()\n\n"""
+def list_{self.model_name_snake_case}s():
+    return {self.repo_file}.list_{self.model_name_snake_case}s()\n\n"""
 
     def get_query_generator(self) -> str:
         primary_key = self.model_primary_keys[0]
 
         return f"""
 def get_{self.model_name_snake_case}({primary_key[0]}):
-    return {self.model_name}.query.filter({self.model_name}.{primary_key[0]} == {primary_key[0]}).one_or_none()\n\n"""
+    return {self.repo_file}.get_{self.model_name_snake_case}({primary_key[0]})\n\n"""
 
     def create_query_generator(self) -> str:
         attributes = [
@@ -35,7 +36,7 @@ def get_{self.model_name_snake_case}({primary_key[0]}):
         ]
         return f"""
 def create_{self.model_name_snake_case}({", ".join(attributes)}):
-    return {self.model_name}({", ".join(attributes)})\n\n"""
+    return {self.repo_file}.create_{self.model_name_snake_case}({", ".join(attributes)})\n\n"""
 
     def update_query_generator(self) -> str:
         attributes = [
@@ -45,20 +46,10 @@ def create_{self.model_name_snake_case}({", ".join(attributes)}):
         ]
         attributes.insert(0, self.model_primary_keys[0][0])
         return f"""
-def update_{self.model_name_snake_case}({self.model_primary_keys[0][0]}, **kwargs):
-    {self.model_name_snake_case} = get_{self.model_name_snake_case}({self.model_primary_keys[0][0]})
-    if not {self.model_name_snake_case}:
-        raise Exception("Not Found")
-    for attr, value in kwargs.items():
-        setattr({self.model_name_snake_case}, attr, value)
-    db.session.commit()
-    return {self.model_name_snake_case}\n\n"""
+def update_{self.model_name_snake_case}({self.model_primary_keys[0][0]}, {"=None, ".join(attributes[1:])}=None):
+    return {self.repo_file}.update_{self.model_name_snake_case}({", ".join(attributes)})\n\n"""
 
     def delete_query_generator(self) -> str:
         return f"""
 def delete_{self.model_name_snake_case}({self.model_primary_keys[0][0]}):
-    {self.model_name_snake_case} = get_{self.model_name_snake_case}({self.model_primary_keys[0][0]})
-    if not {self.model_name_snake_case}:
-        raise Exception("Not Found")
-    db.session.delete({self.model_name_snake_case})
-    db.session.commit()\n"""
+     return {self.repo_file}.delete_{self.model_name_snake_case}({self.model_primary_keys[0][0]})\n\n"""

@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)\n"""
 
     def list_query_generator(self) -> str:
         return f"""
-def list_{self.model_name_snake_case}():
+def list_{self.model_name_snake_case}s():
     try:
         query = select({self.model_name})
         response = db_session.scalars(query).all()
