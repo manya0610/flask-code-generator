@@ -54,7 +54,7 @@ if __name__ == "__main__":
                 table: Table = val
                 print("columns", table.columns)
                 code_generator = CodeGenerator(model_name, table.columns, module_name)
-                print(code_generator.model_attributes[0])
+                print(code_generator._database_model.model_attributes[0])
                 code_generator.repo_file_generator()
                 code_generator.service_file_generator()
                 code_generator.controller_file_generator()
