@@ -3,8 +3,9 @@ import inspect
 
 from sqlalchemy import Column, Table
 
-from src.code_generator.code_generator import CodeGenerator
-
+from src.code_generator.crud_generator import CRUDGenerator
+from src.code_generator.project_generator import ProjectGenerator
+from src.code_generator.helper import copy_models_file
 
 # Function to get model attributes and types
 def get_model_attributes(model):
@@ -44,8 +45,12 @@ def load_models(module_name):
 if __name__ == "__main__":
     # Adjust the module name according to your file structure
     module_name = "src.database.models"
+    models_file = "/".join(module_name.split(".")[:-1]) + "/models.py"
+
     models = load_models(module_name)
     print(models)
+    project_generator = ProjectGenerator("some_project")
+
     for model_name, model_class in models.items():
         print(model_class.__dict__)
         for key, val in model_class.__dict__.items():
@@ -53,10 +58,14 @@ if __name__ == "__main__":
                 print(key, val, "\n")
                 table: Table = val
                 print("columns", table.columns)
-                code_generator = CodeGenerator(model_name, table.columns, module_name)
-                print(code_generator._database_model.model_attributes[0])
-                code_generator.repo_file_generator()
-                code_generator.service_file_generator()
-                code_generator.controller_file_generator()
-                code_generator.flask_server_file_generator()
+                crud_generator = CRUDGenerator(project_generator.project_name, model_name, table.columns, module_name)
+                print(crud_generator._database_model.model_attributes[0])
+                crud_generator.repo_file_generator()
+                crud_generator.service_file_generator()
+                crud_generator.controller_file_generator()
+                project_generator._crud_generator_list.append(crud_generator)
+    project_generator.flask_server_file_generator()
+    project_generator.exceptions_file_generator()
+    copy_models_file(models_file, f"{project_generator.project_name}/database/models.py")
+
 

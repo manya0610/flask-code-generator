@@ -1,10 +1,7 @@
-from src.code_generator.database_model import DataBaseModel
-
 
 class ExceptionGenerator:
-    _database_model: DataBaseModel
-    def __init__(self, database_model:DataBaseModel) -> None:
-        self._database_model = database_model
+    def __init__(self) -> None:
+        pass
 
     def database_exceptions_generator(self):
         return """
@@ -35,7 +32,7 @@ class NotFoundError(Exception):
 
     def request_exceptions_generator(self):
         return """
-        class InvalidJSONError(Exception):
+class InvalidJSONError(Exception):
     error_dict = {"data": "invalid_json"}
 
     def __init__(self, *args, error_dict=None):

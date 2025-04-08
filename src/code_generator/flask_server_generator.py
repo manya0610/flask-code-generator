@@ -1,13 +1,18 @@
-from src.code_generator.database_model import DataBaseModel
+from src.code_generator.crud_generator import CRUDGenerator
 
 
 class FlaskServerGenerator:
-    _database_model: DataBaseModel
+    _crud_generator_list: list[CRUDGenerator]
     controller_file: str
-    def __init__(self, database_model:DataBaseModel, controller_file:str) -> None:
-        self._database_model = database_model
-        self.controller_file = controller_file
+    def __init__(self, _crud_generator_list:list[CRUDGenerator]) -> None:
+        self._crud_generator_list = _crud_generator_list
 
+
+    def controller_imports_generator(self):
+        return "    \n".join([f"from {crud_generator.controller_folder}.{crud_generator.controller_file} import {crud_generator._database_model.model_name_snake_case}_blueprint" for crud_generator in self._crud_generator_list])
+    
+    def blueprint_registration_generator(self):
+        return "    \n".join([f"app.register_blueprint({crud_generator._database_model.model_name_snake_case}_blueprint)" for crud_generator in self._crud_generator_list])
     def app_generator(self) -> str:
         return f"""
 from flask import Flask
@@ -15,10 +20,10 @@ from flask import Flask
 
 def create_app() -> Flask:
     app = Flask(__name__)
-    from {self.controller_file} import {self._database_model.model_name_snake_case}_blueprint
+    {self.controller_imports_generator()}
 
     with app.app_context():
-        app.register_blueprint({self._database_model.model_name_snake_case}_blueprint)
+        {self.blueprint_registration_generator()}
 
     return app
 \n\n"""

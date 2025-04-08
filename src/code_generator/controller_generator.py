@@ -3,13 +3,15 @@ from src.code_generator.database_model import DataBaseModel
 class ControllerGenerator:
     _database_model: DataBaseModel
     service_file: str
-    def __init__(self, database_model:DataBaseModel, service_file:str) -> None:
+    service_folder: str
+    def __init__(self, database_model:DataBaseModel, service_file:str, service_folder:str) -> None:
         self._database_model = database_model
         self.service_file = service_file
+        self.service_folder = service_folder
 
     def get_imports(self) -> str:
         return f"""
-import {self.service_file}
+from {self.service_folder} import {self.service_file}
 from flask import Blueprint, jsonify, request
 {self._database_model.model_name_snake_case}_blueprint = Blueprint("{self._database_model.model_name_snake_case}", __name__, url_prefix="/{self._database_model.model_name_snake_case}")\n"""
     

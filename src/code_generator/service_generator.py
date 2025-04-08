@@ -4,13 +4,15 @@ from src.code_generator.database_model import DataBaseModel
 class ServiceGenerator:
     _database_model: DataBaseModel
     repo_file: str
-    def __init__(self, database_model:DataBaseModel, repo_file:str) -> None:
+    repo_folder: str
+    def __init__(self, database_model:DataBaseModel, repo_file:str, repo_folder:str) -> None:
         self._database_model = database_model
         self.repo_file = repo_file
+        self.repo_folder = repo_folder
 
     def get_imports(self) -> str:
         return f"""
-import {self.repo_file}\n"""
+from {self.repo_folder} import {self.repo_file}\n"""
 
     def list_query_generator(self) -> str:
         return f"""
