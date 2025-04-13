@@ -5,7 +5,7 @@ class ExceptionGenerator:
 
     def database_exceptions_generator(self):
         return """
-class DataBaseError(Exception):
+class DatabaseError(Exception):
 
     error_dict = None
 
@@ -16,7 +16,7 @@ class DataBaseError(Exception):
     pass
 
 
-class DataBaseIntegrityError(DataBaseError):
+class DataBaseIntegrityError(DatabaseError):
     error_dict = None
 
     def __init__(self, *args, error_dict: dict = None):

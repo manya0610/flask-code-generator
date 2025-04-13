@@ -59,11 +59,11 @@ if __name__ == "__main__":
                 table: Table = val
                 print("columns", table.columns)
                 crud_generator = CRUDGenerator(project_generator.project_name, model_name, table.columns, module_name)
-                print(crud_generator._database_model.model_attributes[0])
+                print(crud_generator.database_model.model_attributes[0])
                 crud_generator.repo_file_generator()
                 crud_generator.service_file_generator()
                 crud_generator.controller_file_generator()
-                project_generator._crud_generator_list.append(crud_generator)
+                project_generator.crud_generator_list.append(crud_generator)
     project_generator.flask_server_file_generator()
     project_generator.exceptions_file_generator()
     copy_models_file(models_file, f"{project_generator.project_name}/database/models.py")

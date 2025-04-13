@@ -1,0 +1,10 @@
+
+REPO_FOLDER = "repo"
+SERVICE_FOLDER = "service"
+CONTROLLER_FOLDER = "controller"
+EXCEPTIONS_FOLDER = "exceptions"
+EXCEPTIONS_FILE = "exceptions"
+DATABASE_EXCEPTIONS_FILE = "database_exceptions"
+FLASK_SERVER_FOLDER = "flask_server"
+FLASK_SERVER_FILE = "__init__"
+DATABASE_FOLDER = "database"
