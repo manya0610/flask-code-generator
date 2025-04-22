@@ -28,7 +28,7 @@ class CRUDGenerator:
 
         self.project_name = project_name
 
-        self.database_model = DataBaseModel(model_name, model_attributes, models_file)
+        self.database_model = DataBaseModel(self.project_name, model_name, model_attributes, models_file)
 
         self.repo_generator = RepoGenerator(self.database_model)
         self.repo_file = self.database_model.model_name_snake_case + "_" + "repo"

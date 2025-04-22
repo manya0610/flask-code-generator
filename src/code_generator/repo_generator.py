@@ -12,9 +12,9 @@ class RepoGenerator:
         return f"""
 import logging
 from sqlalchemy import delete, insert, select, update
-from src.database import db_session
-from {self.database_model.models_file} import {self.database_model.model_name}
-from {constants.EXCEPTIONS_FOLDER}.{constants.EXCEPTIONS_FILE} import NotFoundError, DatabaseError
+from {self.database_model.project_name}.{constants.DATABASE_FOLDER} import db_session
+from {self.database_model.project_name}.{constants.DATABASE_FOLDER}.{constants.MODELS_FILE} import {self.database_model.model_name}
+from {self.database_model.project_name}.{constants.EXCEPTIONS_FOLDER}.{constants.EXCEPTIONS_FILE} import NotFoundError, DatabaseError
 logging.basicConfig()
 logger = logging.getLogger(__name__)\n"""
 
@@ -94,6 +94,8 @@ def update_{self.database_model.model_name_snake_case}({self.database_model.mode
             raise NotFoundError
 
         return response
+    except NotFoundError:
+        raise
     except Exception as e:
         db_session.rollback()
         logger.exception("Error updating {self.database_model.model_name} with {self.database_model.model_primary_keys[0][0]}=%s: %s", {self.database_model.model_primary_keys[0][0]}, str(e))
@@ -112,6 +114,8 @@ def delete_{self.database_model.model_name_snake_case}({self.database_model.mode
             raise NotFoundError
 
         return True, response.rowcount
+    except NotFoundError:
+        raise
     except Exception as e:
         db_session.rollback()
         logger.exception("Error deleting {self.database_model.model_name} with {self.database_model.model_primary_keys[0][0]}=%s: %s", {self.database_model.model_primary_keys[0][0]}, str(e))

@@ -10,7 +10,7 @@ class FlaskServerGenerator:
 
 
     def controller_imports_generator(self):
-        return "    \n".join([f"from {constants.CONTROLLER_FOLDER}.{crud_generator.controller_file} import {crud_generator.database_model.model_name_snake_case}_blueprint" for crud_generator in self.crud_generator_list])
+        return "    \n".join([f"from {crud_generator.database_model.project_name}.{constants.CONTROLLER_FOLDER}.{crud_generator.controller_file} import {crud_generator.database_model.model_name_snake_case}_blueprint" for crud_generator in self.crud_generator_list])
     
     def blueprint_registration_generator(self):
         return "    \n".join([f"app.register_blueprint({crud_generator.database_model.model_name_snake_case}_blueprint)" for crud_generator in self.crud_generator_list])

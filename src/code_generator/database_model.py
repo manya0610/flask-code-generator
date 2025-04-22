@@ -11,10 +11,12 @@ class DataBaseModel:
     model_primary_keys: list[Tuple[str, Any]] = []
     model_name_snake_case: str
     models_file: str
+    project_name: str
 
     def __init__(
-        self, model_name: str, model_attributes: list[Column[Any]], models_file: str
+        self, project_name:str, model_name: str, model_attributes: list[Column[Any]], models_file: str
     ) -> None:
+        self.project_name = project_name
         self.model_name = model_name
         self.model_attributes = model_attributes
 

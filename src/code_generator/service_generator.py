@@ -11,7 +11,7 @@ class ServiceGenerator:
 
     def get_imports(self) -> str:
         return f"""
-from {constants.REPO_FOLDER} import {self.repo_file}\n"""
+from {self.database_model.project_name}.{constants.REPO_FOLDER} import {self.repo_file}\n"""
 
     def list_query_generator(self) -> str:
         return f"""

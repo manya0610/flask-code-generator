@@ -1,10 +1,15 @@
-
+CONSTANTS_ERROR_MESSAGE_FILE = "error_messages"
+CONSTANTS_FOLDER = "constants"
+CONTROLLER_FOLDER = "controller"
+DATABASE_EXCEPTIONS_FILE = "database_exceptions"
+DATABASE_FILE = "__init__"
+DATABASE_FOLDER = "database"
+MODELS_FILE = "models"
+EXCEPTIONS_FILE = "exceptions"
+EXCEPTIONS_FOLDER = "exceptions"
+FLASK_SERVER_FILE = "__init__"
+FLASK_SERVER_FOLDER = "flask_server"
 REPO_FOLDER = "repo"
 SERVICE_FOLDER = "service"
-CONTROLLER_FOLDER = "controller"
-EXCEPTIONS_FOLDER = "exceptions"
-EXCEPTIONS_FILE = "exceptions"
-DATABASE_EXCEPTIONS_FILE = "database_exceptions"
-FLASK_SERVER_FOLDER = "flask_server"
-FLASK_SERVER_FILE = "__init__"
-DATABASE_FOLDER = "database"
+
+

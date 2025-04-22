@@ -9,8 +9,10 @@ class ControllerGenerator:
 
     def get_imports(self) -> str:
         return f"""
-from {constants.SERVICE_FOLDER} import {self.service_file}
+from {self.database_model.project_name}.{constants.SERVICE_FOLDER} import {self.service_file}
 from flask import Blueprint, jsonify, request
+from {self.database_model.project_name}.{constants.CONSTANTS_FOLDER}.{constants.CONSTANTS_ERROR_MESSAGE_FILE} import BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND
+from {self.database_model.project_name}.{constants.EXCEPTIONS_FOLDER}.{constants.EXCEPTIONS_FILE} import InvalidJSONError, BadRequestError, DatabaseError, NotFoundError
 {self.database_model.model_name_snake_case}_blueprint = Blueprint("{self.database_model.model_name_snake_case}", __name__, url_prefix="/{self.database_model.model_name_snake_case}")\n"""
     
     def create_handler_generator(self) -> str:
@@ -25,12 +27,16 @@ def create_{self.database_model.model_name_snake_case}_handler():
     try:
         request_json = request.get_json(silent=True)
         if request_json is None:
-            raise Exception("invalid_json")
+            raise InvalidJSONError
         {("\n" + " "*8).join([attribute + " = " + "request_json.get(\"" + attribute + "\"" + ")" for attribute in attributes])}
         {self.database_model.model_name_snake_case} = {self.service_file}.create_{self.database_model.model_name_snake_case}({", ".join(attributes)})
         return jsonify({self.database_model.model_name_snake_case}.to_dict()), 200
-    except Exception as e:
-        return jsonify(str(e)), 500\n\n"""
+    except (InvalidJSONError,  BadRequestError) as e:
+        return jsonify({{"message": BAD_REQUEST,
+                        "error" :  e.error_dict}}), 400
+    except DatabaseError:
+        return jsonify({{"message": INTERNAL_SERVER_ERROR}}), 500
+        \n\n"""
 
     def list_handler_generator(self) -> str:
         return f"""
@@ -39,8 +45,12 @@ def list_{self.database_model.model_name_snake_case}s_handler():
     try:
         {self.database_model.model_name_snake_case}_list = {self.service_file}.list_{self.database_model.model_name_snake_case}s()
         return jsonify([{self.database_model.model_name_snake_case}.to_dict() for {self.database_model.model_name_snake_case} in {self.database_model.model_name_snake_case}_list]), 200
-    except Exception as e:
-        return jsonify(e), 500\n\n"""
+    except (InvalidJSONError,  BadRequestError) as e:
+        return jsonify({{"message": BAD_REQUEST,
+                        "error" :  e.error_dict}}), 400
+    except DatabaseError:
+        return jsonify({{"message": INTERNAL_SERVER_ERROR}}), 500
+        \n\n"""
 
     def get_handler_generator(self) -> str:
         return f"""
@@ -49,8 +59,14 @@ def get_{self.database_model.model_name_snake_case}_handler(id):
     try:
         {self.database_model.model_name_snake_case} = {self.service_file}.get_{self.database_model.model_name_snake_case}(id)
         return jsonify({self.database_model.model_name_snake_case}.to_dict()), 200
-    except Exception as e:
-        return jsonify(e), 500\n\n"""
+    except NotFoundError:
+        return jsonify({{"message": NOT_FOUND}}), 404
+    except (InvalidJSONError,  BadRequestError) as e:
+        return jsonify({{"message": BAD_REQUEST,
+                        "error" :  e.error_dict}}), 400
+    except DatabaseError:
+        return jsonify({{"message": INTERNAL_SERVER_ERROR}}), 500
+        \n\n"""
 
     def update_handler_generator(self) -> str:
         attributes = [
@@ -66,11 +82,17 @@ def update_{self.database_model.model_name_snake_case}_handler(id):
         request_json = request.get_json(silent=True)
         if request_json is None:
             raise Exception("invalid_json")
-        {("\n" + " "*8).join([attribute + " = " + "request_json.get(\"" + attribute + "\"" + ")" for attribute in attributes])}
+        {("\n" + " "*8).join([attribute + " = " + "request_json.get(\"" + attribute + "\"" + ")" for attribute in attributes[1:]])}
         {self.database_model.model_name_snake_case} = {self.service_file}.update_{self.database_model.model_name_snake_case}({", ".join(attributes)})
         return jsonify({self.database_model.model_name_snake_case}.to_dict()), 200
-    except Exception as e:
-        return jsonify(str(e)), 500\n\n"""
+    except NotFoundError:
+        return jsonify({{"message": NOT_FOUND}}), 404
+    except (InvalidJSONError,  BadRequestError) as e:
+        return jsonify({{"message": BAD_REQUEST,
+                        "error" :  e.error_dict}}), 400
+    except DatabaseError:
+        return jsonify({{"message": INTERNAL_SERVER_ERROR}}), 500
+    \n\n"""
 
     def delete_handler_generator(self) -> str:
         return f"""
@@ -79,5 +101,11 @@ def delete_{self.database_model.model_name_snake_case}_handler(id):
     try:
         {self.service_file}.delete_{self.database_model.model_name_snake_case}(id)
         return jsonify(), 200
-    except Exception as e:
-        return jsonify(e), 500\n\n"""
+    except NotFoundError:
+        return jsonify({{"message": NOT_FOUND}}), 404
+    except (InvalidJSONError,  BadRequestError) as e:
+        return jsonify({{"message": BAD_REQUEST,
+                        "error" :  e.error_dict}}), 400
+    except DatabaseError:
+        return jsonify({{"message": INTERNAL_SERVER_ERROR}}), 500
+    \n\n"""
