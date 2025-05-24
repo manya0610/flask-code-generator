@@ -2,7 +2,6 @@ class DatabaseGenerator:
     def __init__(self):
         pass
 
-
     def database_generator(self):
         return """
 from sqlalchemy import create_engine

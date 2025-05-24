@@ -1,11 +1,11 @@
-
+from src.code_generator import constants
 from src.code_generator.database_model import DataBaseModel
-from src.code_generator import  constants
+
 
 class RepoGenerator:
     database_model: DataBaseModel
 
-    def __init__(self,database_model: DataBaseModel) -> None:
+    def __init__(self, database_model: DataBaseModel) -> None:
         self.database_model = database_model
 
     def get_imports(self) -> str:

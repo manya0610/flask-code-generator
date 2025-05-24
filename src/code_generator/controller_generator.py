@@ -1,9 +1,12 @@
-from src.code_generator.database_model import DataBaseModel
 from src.code_generator import constants
+from src.code_generator.database_model import DataBaseModel
+
+
 class ControllerGenerator:
     database_model: DataBaseModel
     service_file: str
-    def __init__(self, database_model:DataBaseModel, service_file:str) -> None:
+
+    def __init__(self, database_model: DataBaseModel, service_file: str) -> None:
         self.database_model = database_model
         self.service_file = service_file
 
@@ -14,7 +17,7 @@ from flask import Blueprint, jsonify, request
 from {self.database_model.project_name}.{constants.CONSTANTS_FOLDER}.{constants.CONSTANTS_ERROR_MESSAGE_FILE} import BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND
 from {self.database_model.project_name}.{constants.EXCEPTIONS_FOLDER}.{constants.EXCEPTIONS_FILE} import InvalidJSONError, BadRequestError, DatabaseError, NotFoundError
 {self.database_model.model_name_snake_case}_blueprint = Blueprint("{self.database_model.model_name_snake_case}", __name__, url_prefix="/{self.database_model.model_name_snake_case}")\n"""
-    
+
     def create_handler_generator(self) -> str:
         attributes = [
             str(attribute).split(".")[-1]
@@ -28,7 +31,7 @@ def create_{self.database_model.model_name_snake_case}_handler():
         request_json = request.get_json(silent=True)
         if request_json is None:
             raise InvalidJSONError
-        {("\n" + " "*8).join([attribute + " = " + "request_json.get(\"" + attribute + "\"" + ")" for attribute in attributes])}
+        {("\n" + " " * 8).join([attribute + " = " + 'request_json.get("' + attribute + '"' + ")" for attribute in attributes])}
         {self.database_model.model_name_snake_case} = {self.service_file}.create_{self.database_model.model_name_snake_case}({", ".join(attributes)})
         return jsonify({self.database_model.model_name_snake_case}.to_dict()), 200
     except (InvalidJSONError,  BadRequestError) as e:
@@ -82,7 +85,7 @@ def update_{self.database_model.model_name_snake_case}_handler(id):
         request_json = request.get_json(silent=True)
         if request_json is None:
             raise Exception("invalid_json")
-        {("\n" + " "*8).join([attribute + " = " + "request_json.get(\"" + attribute + "\"" + ")" for attribute in attributes[1:]])}
+        {("\n" + " " * 8).join([attribute + " = " + 'request_json.get("' + attribute + '"' + ")" for attribute in attributes[1:]])}
         {self.database_model.model_name_snake_case} = {self.service_file}.update_{self.database_model.model_name_snake_case}({", ".join(attributes)})
         return jsonify({self.database_model.model_name_snake_case}.to_dict()), 200
     except NotFoundError:

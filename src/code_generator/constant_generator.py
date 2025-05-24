@@ -1,4 +1,3 @@
-
 class ConstantGenerator:
     def __init__(self) -> None:
         pass

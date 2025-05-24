@@ -11,5 +11,3 @@ FLASK_SERVER_FILE = "__init__"
 FLASK_SERVER_FOLDER = "flask_server"
 REPO_FOLDER = "repo"
 SERVICE_FOLDER = "service"
-
-

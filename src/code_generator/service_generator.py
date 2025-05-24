@@ -5,7 +5,8 @@ from src.code_generator.database_model import DataBaseModel
 class ServiceGenerator:
     database_model: DataBaseModel
     repo_file: str
-    def __init__(self, database_model:DataBaseModel, repo_file:str) -> None:
+
+    def __init__(self, database_model: DataBaseModel, repo_file: str) -> None:
         self.database_model = database_model
         self.repo_file = repo_file
 

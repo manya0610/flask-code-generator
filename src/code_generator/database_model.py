@@ -14,7 +14,11 @@ class DataBaseModel:
     project_name: str
 
     def __init__(
-        self, project_name:str, model_name: str, model_attributes: list[Column[Any]], models_file: str
+        self,
+        project_name: str,
+        model_name: str,
+        model_attributes: list[Column[Any]],
+        models_file: str,
     ) -> None:
         self.project_name = project_name
         self.model_name = model_name
