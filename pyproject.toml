@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "build>=1.2.2.post1",
     "flask>=3.1.0",
     "psycopg2-binary>=2.9.10",
     "requests>=2.32.3",
@@ -12,3 +13,8 @@ dependencies = [
     "sqlalchemy>=2.0.38",
     "sqlalchemy-utils>=0.41.2",
 ]
+
+
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
