@@ -2,11 +2,11 @@ from typing import Any
 
 from sqlalchemy import Column
 
-from src.flask_code_generator import constants
-from src.flask_code_generator.controller_generator import ControllerGenerator
-from src.flask_code_generator.database_model import DataBaseModel
-from src.flask_code_generator.repo_generator import RepoGenerator
-from src.flask_code_generator.service_generator import ServiceGenerator
+from flask_code_generator import constants
+from flask_code_generator.controller_generator import ControllerGenerator
+from flask_code_generator.database_model import DataBaseModel
+from flask_code_generator.repo_generator import RepoGenerator
+from flask_code_generator.service_generator import ServiceGenerator
 
 
 class CRUDGenerator:
