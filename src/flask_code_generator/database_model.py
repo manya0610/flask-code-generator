@@ -2,7 +2,7 @@ from typing import Any, Tuple
 
 from sqlalchemy import Column
 
-from src.code_generator.helper import convert_to_snake_case_name
+from src.flask_code_generator.helper import convert_to_snake_case_name
 
 
 class DataBaseModel:

@@ -1,11 +1,11 @@
 import os
 
-from src.code_generator import constants
-from src.code_generator.constant_generator import ConstantGenerator
-from src.code_generator.crud_generator import CRUDGenerator
-from src.code_generator.database_generator import DatabaseGenerator
-from src.code_generator.exception_generator import ExceptionGenerator
-from src.code_generator.flask_server_generator import FlaskServerGenerator
+from src.flask_code_generator import constants
+from src.flask_code_generator.constant_generator import ConstantGenerator
+from src.flask_code_generator.crud_generator import CRUDGenerator
+from src.flask_code_generator.database_generator import DatabaseGenerator
+from src.flask_code_generator.exception_generator import ExceptionGenerator
+from src.flask_code_generator.flask_server_generator import FlaskServerGenerator
 
 
 class ProjectGenerator:

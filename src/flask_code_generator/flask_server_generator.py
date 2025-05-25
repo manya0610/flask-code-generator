@@ -1,5 +1,5 @@
-from src.code_generator import constants
-from src.code_generator.crud_generator import CRUDGenerator
+from src.flask_code_generator import constants
+from src.flask_code_generator.crud_generator import CRUDGenerator
 
 
 class FlaskServerGenerator:

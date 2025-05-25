@@ -1,5 +1,5 @@
-from src.code_generator import constants
-from src.code_generator.database_model import DataBaseModel
+from src.flask_code_generator import constants
+from src.flask_code_generator.database_model import DataBaseModel
 
 
 class ControllerGenerator:

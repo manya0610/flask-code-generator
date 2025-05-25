@@ -3,9 +3,9 @@ import inspect
 
 from sqlalchemy import Column, Table
 
-from src.code_generator.crud_generator import CRUDGenerator
-from src.code_generator.project_generator import ProjectGenerator
-from src.code_generator.helper import copy_models_file
+from src.flask_code_generator.crud_generator import CRUDGenerator
+from src.flask_code_generator.project_generator import ProjectGenerator
+from src.flask_code_generator.helper import copy_models_file
 
 # Function to get model attributes and types
 def get_model_attributes(model):
@@ -44,12 +44,18 @@ def load_models(module_name):
 # Example usage
 if __name__ == "__main__":
     # Adjust the module name according to your file structure
-    module_name = "src.database.models"
+
+    # module_name = "src.database.models"
+    module_name = input("Enter models.py File Path as Module: ")
+
     models_file = "/".join(module_name.split(".")[:-1]) + "/models.py"
 
     models = load_models(module_name)
     print(models)
-    project_generator = ProjectGenerator("some_project")
+    project_name = "some_project"
+    if models:
+        project_name = input("Enter Project Name: ")
+    project_generator = ProjectGenerator(project_name)
 
     for model_name, model_class in models.items():
         print(model_class.__dict__)
