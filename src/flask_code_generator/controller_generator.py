@@ -46,7 +46,9 @@ def create_{self.database_model.model_name_snake_case}_handler():
 @{self.database_model.model_name_snake_case}_blueprint.route("/", methods=["GET"])
 def list_{self.database_model.model_name_snake_case}s_handler():
     try:
-        {self.database_model.model_name_snake_case}_list = {self.service_file}.list_{self.database_model.model_name_snake_case}s()
+        limit = request.args.get("limit", 100)
+        offset = request.args.get("offset", 0)
+        {self.database_model.model_name_snake_case}_list = {self.service_file}.list_{self.database_model.model_name_snake_case}s(limit, offset)
         return jsonify([{self.database_model.model_name_snake_case}.to_dict() for {self.database_model.model_name_snake_case} in {self.database_model.model_name_snake_case}_list]), 200
     except (InvalidJSONError,  BadRequestError) as e:
         return jsonify({{"message": BAD_REQUEST,

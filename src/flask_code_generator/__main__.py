@@ -4,8 +4,9 @@ import inspect
 from sqlalchemy import Column, Table
 
 from flask_code_generator.crud_generator import CRUDGenerator
-from flask_code_generator.project_generator import ProjectGenerator
 from flask_code_generator.helper import copy_models_file
+from flask_code_generator.project_generator import ProjectGenerator
+
 
 # Function to get model attributes and types
 def get_model_attributes(model):
@@ -64,7 +65,12 @@ if __name__ == "__main__":
                     print(key, val, "\n")
                     table: Table = val
                     print("columns", table.columns)
-                    crud_generator = CRUDGenerator(project_generator.project_name, model_name, table.columns, module_name)
+                    crud_generator = CRUDGenerator(
+                        project_generator.project_name,
+                        model_name,
+                        table.columns,
+                        module_name,
+                    )
                     print(crud_generator.database_model.model_attributes[0])
                     crud_generator.repo_file_generator()
                     crud_generator.service_file_generator()
@@ -75,6 +81,8 @@ if __name__ == "__main__":
         project_generator.constants_file_generator()
         project_generator.database_file_generator()
         project_generator.init_file_generator()
-        copy_models_file(models_file, f"{project_generator.project_name}/database/models.py")
+        copy_models_file(
+            models_file, f"{project_generator.project_name}/database/models.py"
+        )
     except ModuleNotFoundError:
         print("given module not found")
