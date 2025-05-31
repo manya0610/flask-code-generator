@@ -2,7 +2,7 @@ from typing import Any
 
 from sqlalchemy import Column, Integer, String
 
-from src.database import Base
+from sample_models import Base
 
 
 class User(Base):

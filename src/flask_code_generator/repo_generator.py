@@ -1,5 +1,5 @@
-from src.flask_code_generator import constants
-from src.flask_code_generator.database_model import DataBaseModel
+from flask_code_generator import constants
+from flask_code_generator.database_model import DataBaseModel
 
 
 class RepoGenerator:
@@ -20,9 +20,9 @@ logger = logging.getLogger(__name__)\n"""
 
     def list_query_generator(self) -> str:
         return f"""
-def list_{self.database_model.model_name_snake_case}s():
+def list_{self.database_model.model_name_snake_case}s(limit=100, offset=0):
     try:
-        query = select({self.database_model.model_name})
+        query = select({self.database_model.model_name}).limit(limit).offset(offset)
         response = db_session.scalars(query).all()
         return list(response)
     except Exception as e:

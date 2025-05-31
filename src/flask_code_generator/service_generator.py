@@ -1,5 +1,5 @@
-from src.flask_code_generator import constants
-from src.flask_code_generator.database_model import DataBaseModel
+from flask_code_generator import constants
+from flask_code_generator.database_model import DataBaseModel
 
 
 class ServiceGenerator:
@@ -16,7 +16,7 @@ from {self.database_model.project_name}.{constants.REPO_FOLDER} import {self.rep
 
     def list_query_generator(self) -> str:
         return f"""
-def list_{self.database_model.model_name_snake_case}s():
+def list_{self.database_model.model_name_snake_case}s(limit=100, offset=0):
     return {self.repo_file}.list_{self.database_model.model_name_snake_case}s()\n\n"""
 
     def get_query_generator(self) -> str:

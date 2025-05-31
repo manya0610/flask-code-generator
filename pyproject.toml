@@ -10,6 +10,7 @@ dependencies = [
     "psycopg2-binary>=2.9.10",
     "requests>=2.32.3",
     "ruff>=0.9.9",
+    "setuptools>=80.8.0",
     "sqlalchemy>=2.0.38",
     "sqlalchemy-utils>=0.41.2",
 ]
