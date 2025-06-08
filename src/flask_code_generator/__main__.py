@@ -80,6 +80,7 @@ if __name__ == "__main__":
         project_generator.exceptions_file_generator()
         project_generator.constants_file_generator()
         project_generator.database_file_generator()
+        project_generator.database_script_file_generator()
         project_generator.init_file_generator()
         copy_models_file(
             models_file, f"{project_generator.project_name}/database/models.py"

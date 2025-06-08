@@ -4,17 +4,19 @@ from flask_code_generator import constants
 from flask_code_generator.constant_generator import ConstantGenerator
 from flask_code_generator.crud_generator import CRUDGenerator
 from flask_code_generator.database_generator import DatabaseGenerator
+from flask_code_generator.database_script_generator import DatabaseScriptGenerator
 from flask_code_generator.exception_generator import ExceptionGenerator
 from flask_code_generator.flask_server_generator import FlaskServerGenerator
 
 
 class ProjectGenerator:
     project_name: str
-    crud_generator_list: list[CRUDGenerator] = []
-    flask_server_generator: FlaskServerGenerator
-    exception_generator: ExceptionGenerator
     constant_generator: ConstantGenerator
+    crud_generator_list: list[CRUDGenerator] = []
     database_generator: DatabaseGenerator
+    database_script_generator: DatabaseScriptGenerator
+    exception_generator: ExceptionGenerator
+    flask_server_generator: FlaskServerGenerator
 
     def __init__(self, project_name: str):
         self.project_name = project_name
@@ -22,6 +24,7 @@ class ProjectGenerator:
         self.exception_generator = ExceptionGenerator()
         self.constant_generator = ConstantGenerator()
         self.database_generator = DatabaseGenerator()
+        self.database_script_generator = DatabaseScriptGenerator(self.project_name)
 
         self.flask_server_generator = FlaskServerGenerator(self.crud_generator_list)
 
@@ -33,6 +36,7 @@ class ProjectGenerator:
         os.makedirs(f"{self.project_name}/{constants.EXCEPTIONS_FOLDER}")
         os.makedirs(f"{self.project_name}/{constants.DATABASE_FOLDER}")
         os.makedirs(f"{self.project_name}/{constants.CONSTANTS_FOLDER}")
+        os.makedirs(f"{self.project_name}/{constants.SCRIPTS_FOLDER}")
 
     def init_file_generator(self):
         with open(f"{self.project_name}/__init__.py", "w", encoding="utf-8") as f:
@@ -70,3 +74,11 @@ class ProjectGenerator:
             encoding="utf-8",
         ) as f:
             f.write(self.database_generator.database_generator())
+
+    def database_script_file_generator(self) -> None:
+        with open(
+            f"{self.project_name}/{constants.SCRIPTS_FOLDER}/db_scripts.py",
+            "w",
+            encoding="utf-8",
+        ) as f:
+            f.write(self.database_script_generator.database_script_generator())
